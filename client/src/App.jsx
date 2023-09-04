@@ -7,6 +7,7 @@ import TaksPage from "./pages/TasksPage.jsx";
 import TaskFormPage from "./pages/TaskFormPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 export default function App() {
   return (
@@ -16,11 +17,13 @@ export default function App() {
           <Route path="/" element={<HomePage/>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          
-          <Route path="/tasks" element={<TaksPage />} />
+
+         <Route element={<ProtectedRoute/>}> 
+         <Route path="/tasks" element={<TaksPage />} />
           <Route path="/add-task" element={<TaskFormPage/>} />
           <Route path="/tasks/:id" element={<TaskFormPage/>} />
           <Route path="/profile" element={<ProfilePage/>} />
+         </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
