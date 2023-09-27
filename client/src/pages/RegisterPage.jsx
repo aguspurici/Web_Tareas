@@ -28,7 +28,7 @@ function RegisterPage() {
         {registerErrors.map((error, i) => (
           <div className="bg-red-500 p-2 text-white text-center my-2" key={i}>
             {" "}
-            {error}{" "}
+            {error}{" "} 
           </div>
         ))}
         <form onSubmit={onSubmit}>

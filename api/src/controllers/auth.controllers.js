@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
+import jwt from "jsonwebtoken";
+import { TOKEN_SECRET } from "../config.js";
 
 // Función para registrar un nuevo usuario
 export const register = async (req, res) => {
@@ -9,10 +11,7 @@ export const register = async (req, res) => {
 
   try {
     const userFound = await User.findOne({ email });
-    if (userFound)
-      return res
-        .status(400)
-        .json(["The email is already in use"]);
+    if (userFound) return res.status(400).json(["The email is already in use"]);
     // Hash de la contraseña
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -109,5 +108,22 @@ export const profile = async (req, res) => {
     email: userFound.email,
     creartedAt: userFound.createdAt,
     updatedAt: userFound.updatedAt,
+  });
+};
+
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+    if (err) return res.status(401).json({ message: "Unauthorized" });
+
+    const userFound = await User.findById(user.id);
+    if (!userFound) return res.status(401).json({ message: "Unauthorized" });
+    return res.json({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+    });
   });
 };
