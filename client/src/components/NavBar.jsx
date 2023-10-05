@@ -6,7 +6,7 @@ function NavBar() {
 
   return (
     <nav className="bg-zinc-700 my-3 flex justify-between py-5 px-10 rouded-lg">
-      <Link to="/">
+      <Link to={isAuthenticated ? "/tasks" : "/"}>
         <h1 className="text-2xl font-bold ">Task Manager</h1>
       </Link>
       <ul className="flex gap-x-2">
